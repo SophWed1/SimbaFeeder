@@ -10,6 +10,7 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Feeder;
 import frc.robot.commands.Feed;
+import frc.robot.commands.StopFeeding;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -64,7 +65,7 @@ public class RobotContainer {
 
     //connect buttons to commands
     A.onTrue(new Feed(m_feeder));
-
+    A.onFalse(new StopFeeding(m_feeder));
   }
 
   /**

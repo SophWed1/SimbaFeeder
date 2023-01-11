@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -22,6 +23,11 @@ public class Feeder extends SubsystemBase {
   public Feeder() {
     feederBack = new VictorSPX(6);
     feederFront = new VictorSPX(5);
+
+    feederBack.setInverted(true);
+    feederFront.setInverted(false);
+    feederFront.setNeutralMode(NeutralMode.Brake);
+    feederBack.setNeutralMode(NeutralMode.Brake);
 
   }
 

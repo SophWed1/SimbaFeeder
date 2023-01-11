@@ -4,16 +4,15 @@
 
 package frc.robot.commands;
 
-import frc.robot.Robot;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Robot;
 import frc.robot.subsystems.Feeder;
 
-public class Feed extends CommandBase {
-  /** Creates a new Feed. */
-
+public class StopFeeding extends CommandBase {
+  /** Creates a new StopFeeding. */
   private final Feeder feeder;
 
-  public Feed(Feeder feeder) {
+  public StopFeeding(Feeder feeder) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.feeder = feeder;
     addRequirements(feeder);
@@ -22,7 +21,7 @@ public class Feed extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    feeder.moveFeeder(0.5);
+    feeder.stopFeeder();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -31,25 +30,11 @@ public class Feed extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-
     return false;
   }
 }
-
-/*
- * public boolean isFinished() {
-    if (m_feeder.sense_ball() == true){
-
-     return false;
-    } else {
-      return true;
-    }
-  
- */
