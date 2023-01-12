@@ -9,8 +9,17 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Feeder;
+import frc.robot.subsystems.FrontShooter;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.backShooter;
 import frc.robot.commands.Feed;
+import frc.robot.commands.FrontShoot;
+import frc.robot.commands.Shoot;
+import frc.robot.commands.StartIntake;
 import frc.robot.commands.StopFeeding;
+import frc.robot.commands.StopFrontShoot;
+import frc.robot.commands.StopIntake;
+import frc.robot.commands.StopShooting;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -28,6 +37,9 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final Feeder m_feeder = new Feeder();
+  private final backShooter m_backShooter = new backShooter();
+  private final FrontShooter m_FrontShooter = new FrontShooter();
+  private final Intake m_intake = new Intake();
 
   private final XboxController m_joystick = new XboxController(1);
 
@@ -62,10 +74,27 @@ public class RobotContainer {
 
     //make some buttons
     final JoystickButton A = new JoystickButton(m_joystick, 1);
+    final JoystickButton B = new JoystickButton(m_joystick, 2);
 
     //connect buttons to commands
+    /* 
+    * without parallel commands:
+
     A.onTrue(new Feed(m_feeder));
-    //A.onFalse(new StopFeeding(m_feeder));
+    A.onFalse(new StopFeeding(m_feeder));
+
+    B.onTrue(new Shoot(m_backShooter));
+    B.onFalse(new StopShooting(m_backShooter));
+    */
+
+    //with parallel commands:
+    A.onTrue(new Feed(m_feeder).alongWith(new Shoot(m_backShooter)).alongWith(new FrontShoot(m_FrontShooter)));
+    A.onFalse(new StopFeeding(m_feeder).alongWith(new StopShooting(m_backShooter)).alongWith(new StopFrontShoot(m_FrontShooter)));
+
+    B.onTrue(new StartIntake(m_intake));
+    B.onFalse(new StopIntake(m_intake));
+    
+   
   }
 
   /**

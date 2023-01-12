@@ -2,32 +2,30 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+//NOTE: THE MOTOR FOR THIS IS BROKEN 
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
-import frc.robot.subsystems.Feeder;
+import frc.robot.subsystems.FrontShooter;
 
-public class StopFeeding extends CommandBase {
-  /** Creates a new StopFeeding. */
-  private final Feeder feeder;
-
-  public StopFeeding(Feeder feeder) {
+public class FrontShoot extends CommandBase {
+  private final FrontShooter m_FrontShooter;
+  /** Creates a new FrontShoot. */
+  public FrontShoot(FrontShooter frontShooter) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.feeder = feeder;
-    addRequirements(feeder);
+
+    m_FrontShooter = frontShooter;
+    addRequirements(m_FrontShooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-   
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    feeder.stopFeeder();
+    m_FrontShooter.moveFrontShooter(0.5);
   }
 
   // Called once the command ends or is interrupted.
