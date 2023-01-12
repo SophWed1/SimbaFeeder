@@ -12,6 +12,7 @@ public class Feed extends CommandBase {
   /** Creates a new Feed. */
 
   private final Feeder feeder;
+  
 
   public Feed(Feeder feeder) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -23,15 +24,20 @@ public class Feed extends CommandBase {
   @Override
   public void initialize() {
     feeder.moveFeeder(0.5);
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    
+  }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+   
+    feeder.stopFeeder();
 
   }
 
@@ -39,7 +45,10 @@ public class Feed extends CommandBase {
   @Override
   public boolean isFinished() {
 
+    end(true);
+
     return false;
+    
   }
 }
 

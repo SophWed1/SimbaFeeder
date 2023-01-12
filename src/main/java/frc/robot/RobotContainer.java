@@ -29,7 +29,7 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final Feeder m_feeder = new Feeder();
 
-  private final XboxController m_joystick = new XboxController(0);
+  private final XboxController m_joystick = new XboxController(1);
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
@@ -56,7 +56,7 @@ public class RobotContainer {
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));
 
-        // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
+    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
@@ -65,7 +65,7 @@ public class RobotContainer {
 
     //connect buttons to commands
     A.onTrue(new Feed(m_feeder));
-    A.onFalse(new StopFeeding(m_feeder));
+    //A.onFalse(new StopFeeding(m_feeder));
   }
 
   /**
