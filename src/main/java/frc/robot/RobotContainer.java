@@ -12,6 +12,8 @@ import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.FrontShooter;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.backShooter;
+import frc.robot.subsystems.limelight;
+
 import frc.robot.commands.Feed;
 import frc.robot.commands.FrontShoot;
 import frc.robot.commands.Shoot;
@@ -24,6 +26,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -41,6 +44,7 @@ public class RobotContainer {
   private final backShooter m_backShooter = new backShooter();
   private final FrontShooter m_FrontShooter = new FrontShooter();
   private final Intake m_intake = new Intake();
+  private final limelight m_limelight = new limelight();
 
   private final XboxController m_joystick = new XboxController(1);
 
@@ -65,6 +69,11 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
+    m_FrontShooter.setDefaultCommand(new RunCommand(() -> {
+      m_FrontShooter.moveFrontShooter(limelight.x*0.1);
+    }, m_FrontShooter));
+
+
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));
@@ -74,8 +83,8 @@ public class RobotContainer {
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
     //make some buttons
-    final JoystickButton A = new JoystickButton(m_joystick, 1);
-    final JoystickButton B = new JoystickButton(m_joystick, 2);
+    //final JoystickButton A = new JoystickButton(m_joystick, 1);
+    //final JoystickButton B = new JoystickButton(m_joystick, 2);
 
     //connect buttons to commands
     /* 
@@ -90,29 +99,47 @@ public class RobotContainer {
 
     //with parallel commands:
 
-    A.onTrue(
-      Commands.startEnd(() -> m_feeder.moveFeeder(.65), () -> m_feeder.moveFeeder(0), m_feeder).alongWith(
-        Commands.startEnd(() -> m_FrontShooter.moveFrontShooter(.65), () -> m_FrontShooter.moveFrontShooter(0), m_FrontShooter)).alongWith(
-          Commands.startEnd(() -> m_backShooter.moveBackShooter(.65), () -> m_backShooter.moveBackShooter(0), m_backShooter))
+   m_driverController.a().onTrue(
+    Commands.runOnce(() -> m_limelight.setPipeline(0), m_limelight)
+      //Commands.startEnd(() -> m_feeder.moveFeeder(.65), () -> m_feeder.moveFeeder(0), m_feeder).alongWith(
+        //Commands.startEnd(() -> m_FrontShooter.moveFrontShooter(.65), () -> m_FrontShooter.moveFrontShooter(0), m_FrontShooter)).alongWith(
+          //Commands.startEnd(() -> m_backShooter.moveBackShooter(.65), () -> m_backShooter.moveBackShooter(0), m_backShooter))
         );
+        
 
     //A.onTrue(new Feed(m_feeder).alongWith(new Shoot(m_backShooter)).alongWith(new FrontShoot(m_FrontShooter)));
     //A.onFalse(new StopFeeding(m_feeder).alongWith(new StopShooting(m_backShooter)).alongWith(new StopFrontShoot(m_FrontShooter)));
-
+/* 
     
     A.onFalse(
       Commands.startEnd(() -> m_feeder.stopFeeder(), () -> m_feeder.stopFeeder(), m_feeder).alongWith(
         Commands.startEnd(() -> m_FrontShooter.stopFrontShooter(), () -> m_FrontShooter.stopFrontShooter(), m_FrontShooter)).alongWith(
           Commands.startEnd(() -> m_backShooter.stopBackShooter(), () -> m_backShooter.stopBackShooter(), m_backShooter))
         );
-
-    B.onTrue(Commands.startEnd(() -> m_intake.moveIntake(.5), () ->  m_intake.stopIntake(), m_intake) );
-    B.onFalse(Commands.startEnd(() -> m_intake.stopIntake(), () -> m_intake.stopIntake(), m_intake));
+*/
+    m_driverController.b().onTrue(
+      Commands.runOnce(()-> m_limelight.setPipeline(1), m_limelight)
+      //Commands.startEnd(() -> m_intake.moveIntake(.5), () ->  m_intake.stopIntake(), m_intake)
+     );
+    //B.onFalse(Commands.startEnd(() -> m_intake.stopIntake(), () -> m_intake.stopIntake(), m_intake));
 
     /* 
     B.onTrue(new StartIntake(m_intake));
     B.onFalse(new StopIntake(m_intake));
     */
+
+  m_driverController.x().onTrue(
+    Commands.runOnce(() -> m_limelight.increasePipeline(), m_limelight)
+
+    //, () -> m_limelight.adjustInterrupted()
+  );
+
+  m_driverController.y().onTrue(
+    Commands.runOnce(() -> m_limelight.decreasePipeline(), m_limelight)
+  );
+      
+
+  
     
    
   }
